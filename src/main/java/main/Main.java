@@ -2,7 +2,9 @@ package main;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import servlets.RedirectToAdvcash;
+import servlets.SendToAdvcashServlet;
+import servlets.SuccessfulPayServlet;
+import servlets.UnsuccessfulPayServlet;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -11,7 +13,10 @@ public class Main {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         contextHandler.setContextPath("/");
         contextHandler.setWelcomeFiles(new String[]{"index.html"});
-        contextHandler.addServlet(RedirectToAdvcash.class,"/redirectToAdvcash");
+        contextHandler.addServlet(SendToAdvcashServlet.class,"/redirectToAdvcash");
+        contextHandler.addServlet(SuccessfulPayServlet.class,"/successful");
+        contextHandler.addServlet(UnsuccessfulPayServlet.class,"/unsuccessful");
+
         server.setHandler(contextHandler);
 
         server.start();
