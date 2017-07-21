@@ -33,6 +33,11 @@ dependencies {
     compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
+    // https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink
+    compile group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.6.4'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+
 
 
 }

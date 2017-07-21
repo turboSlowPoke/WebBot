@@ -14,10 +14,16 @@
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-servlet:9.4.6.v20170531" level="project" />
     <orderEntry type="library" name="Gradle: org.freemarker:freemarker:2.3.23" level="project" />
     <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.10.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.persistence:eclipselink:2.6.4" level="project" />
+    <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:6.0.6" level="project" />
     <orderEntry type="library" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-http:9.4.6.v20170531" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-io:9.4.6.v20170531" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-security:9.4.6.v20170531" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.persistence:javax.persistence:2.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.persistence:commonj.sdo:2.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: javax.validation:validation-api:1.1.0.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.glassfish:javax.json:1.0.4" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-util:9.4.6.v20170531" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="WebBot_main" />
