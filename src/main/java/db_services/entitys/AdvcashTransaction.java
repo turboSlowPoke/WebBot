@@ -1,12 +1,11 @@
 package db_services.entitys;
 
-import sun.dc.pr.PRError;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
-public class AdvcashTransaction {
+public class AdvcashTransaction implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String ac_src_wallet;// Текстовая строка Uxxxxxxxxxxxx, 12 символов кошелёк покупателя
@@ -30,6 +29,49 @@ public class AdvcashTransaction {
     private String Merchantcustomfield;//
     private String ac_hash;//HASH-строка, составленная из информации, содержащейся в данной форме, и секретного слова для защиты.
 
+     AdvcashTransaction() {
+    }
+
+    public AdvcashTransaction(String ac_src_wallet,
+                              String ac_dest_wallet,
+                              Float ac_amount,
+                              Float ac_merchant_amount,
+                              String ac_merchant_currency,
+                              Float ac_fee,
+                              Float ac_buyer_amount_without_commission,
+                              Float ac_buyer_amount_with_commission,
+                              String ac_buyer_currency,
+                              Long ac_transfer,
+                              String ac_sci_name,
+                              String ac_start_date,
+                              String ac_order_id,
+                              String ac_ps,
+                              String ac_transaction_status,
+                              String ac_buyer_email,
+                              Boolean ac_buyer_verified,
+                              String ac_comments,
+                              String ac_hash) {
+        this.ac_src_wallet = ac_src_wallet;
+        this.ac_dest_wallet = ac_dest_wallet;
+        this.ac_amount = ac_amount;
+        this.ac_merchant_amount = ac_merchant_amount;
+        this.ac_merchant_currency = ac_merchant_currency;
+        this.ac_fee = ac_fee;
+        this.ac_buyer_amount_without_commission = ac_buyer_amount_without_commission;
+        this.ac_buyer_amount_with_commission = ac_buyer_amount_with_commission;
+        this.ac_buyer_currency = ac_buyer_currency;
+        this.ac_transfer = ac_transfer;
+        this.ac_sci_name = ac_sci_name;
+        this.ac_start_date = ac_start_date;
+        this.ac_order_id = ac_order_id;
+        this.ac_ps = ac_ps;
+        this.ac_transaction_status = ac_transaction_status;
+        this.ac_buyer_email = ac_buyer_email;
+        this.ac_buyer_verified = ac_buyer_verified;
+        this.ac_comments = ac_comments;
+        this.ac_hash = ac_hash;
+    }
+
     public int getId() {
         return id;
     }
@@ -38,160 +80,80 @@ public class AdvcashTransaction {
         return ac_src_wallet;
     }
 
-    public void setAc_src_wallet(String ac_src_wallet) {
-        this.ac_src_wallet = ac_src_wallet;
-    }
-
     public String getAc_dest_wallet() {
         return ac_dest_wallet;
-    }
-
-    public void setAc_dest_wallet(String ac_dest_wallet) {
-        this.ac_dest_wallet = ac_dest_wallet;
     }
 
     public Float getAc_amount() {
         return ac_amount;
     }
 
-    public void setAc_amount(Float ac_amount) {
-        this.ac_amount = ac_amount;
-    }
-
     public Float getAc_merchant_amount() {
         return ac_merchant_amount;
-    }
-
-    public void setAc_merchant_amount(Float ac_merchant_amount) {
-        this.ac_merchant_amount = ac_merchant_amount;
     }
 
     public String getAc_merchant_currency() {
         return ac_merchant_currency;
     }
 
-    public void setAc_merchant_currency(String ac_merchant_currency) {
-        this.ac_merchant_currency = ac_merchant_currency;
-    }
-
     public Float getAc_fee() {
         return ac_fee;
-    }
-
-    public void setAc_fee(Float ac_fee) {
-        this.ac_fee = ac_fee;
     }
 
     public Float getAc_buyer_amount_without_commission() {
         return ac_buyer_amount_without_commission;
     }
 
-    public void setAc_buyer_amount_without_commission(Float ac_buyer_amount_without_commission) {
-        this.ac_buyer_amount_without_commission = ac_buyer_amount_without_commission;
-    }
-
     public Float getAc_buyer_amount_with_commission() {
         return ac_buyer_amount_with_commission;
-    }
-
-    public void setAc_buyer_amount_with_commission(Float ac_buyer_amount_with_commission) {
-        this.ac_buyer_amount_with_commission = ac_buyer_amount_with_commission;
     }
 
     public String getAc_buyer_currency() {
         return ac_buyer_currency;
     }
 
-    public void setAc_buyer_currency(String ac_buyer_currency) {
-        this.ac_buyer_currency = ac_buyer_currency;
-    }
-
     public Long getAc_transfer() {
         return ac_transfer;
-    }
-
-    public void setAc_transfer(Long ac_transfer) {
-        this.ac_transfer = ac_transfer;
     }
 
     public String getAc_sci_name() {
         return ac_sci_name;
     }
 
-    public void setAc_sci_name(String ac_sci_name) {
-        this.ac_sci_name = ac_sci_name;
-    }
-
     public String getAc_start_date() {
         return ac_start_date;
-    }
-
-    public void setAc_start_date(String ac_start_date) {
-        this.ac_start_date = ac_start_date;
     }
 
     public String getAc_order_id() {
         return ac_order_id;
     }
 
-    public void setAc_order_id(String ac_order_id) {
-        this.ac_order_id = ac_order_id;
-    }
-
     public String getAc_ps() {
         return ac_ps;
-    }
-
-    public void setAc_ps(String ac_ps) {
-        this.ac_ps = ac_ps;
     }
 
     public String getAc_transaction_status() {
         return ac_transaction_status;
     }
 
-    public void setAc_transaction_status(String ac_transaction_status) {
-        this.ac_transaction_status = ac_transaction_status;
-    }
-
     public String getAc_buyer_email() {
         return ac_buyer_email;
-    }
-
-    public void setAc_buyer_email(String ac_buyer_email) {
-        this.ac_buyer_email = ac_buyer_email;
     }
 
     public Boolean getAc_buyer_verified() {
         return ac_buyer_verified;
     }
 
-    public void setAc_buyer_verified(Boolean ac_buyer_verified) {
-        this.ac_buyer_verified = ac_buyer_verified;
-    }
-
     public String getAc_comments() {
         return ac_comments;
-    }
-
-    public void setAc_comments(String ac_comments) {
-        this.ac_comments = ac_comments;
     }
 
     public String getMerchantcustomfield() {
         return Merchantcustomfield;
     }
 
-    public void setMerchantcustomfield(String merchantcustomfield) {
-        Merchantcustomfield = merchantcustomfield;
-    }
-
     public String getAc_hash() {
         return ac_hash;
-    }
-
-    public void setAc_hash(String ac_hash) {
-        this.ac_hash = ac_hash;
     }
 
     @Override

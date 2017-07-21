@@ -1,12 +1,14 @@
 package db_services.entitys;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
     @Id
     private  long userID;
     private long chatID;
@@ -35,16 +37,8 @@ public class User {
 
     User() {}
 
-    public User(long userID, String userName, String firstName, String lastName,long chatID) {
-        this.userID = userID;
-        this.userName = userName;
-        this.firstName = firstName;
-        this.LastName = lastName;
-        this.chatID = chatID;
-    }
-
-    public User(long userID) {
-        this.userID = userID;
+    public long getUserID() {
+        return userID;
     }
 
     public long getChatID() {
@@ -55,24 +49,28 @@ public class User {
         this.chatID = chatID;
     }
 
-    public long getUserID() {
-        return userID;
+    public int getLevel() {
+        return level;
     }
 
-    public LocalDate getEndDate() {
-        return this.endDate;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public int getRightKey() {
+        return rightKey;
     }
 
-    public String getTypeUser() {
-        return typeUser;
+    public void setRightKey(int rightKey) {
+        this.rightKey = rightKey;
     }
 
-    public void setTypeUser(String typeUser) {
-        this.typeUser = typeUser;
+    public int getLeftKey() {
+        return leftKey;
+    }
+
+    public void setLeftKey(int leftKey) {
+        this.leftKey = leftKey;
     }
 
     public String getUserName() {
@@ -99,28 +97,58 @@ public class User {
         LastName = lastName;
     }
 
-    public int getLevel() {
-        return level;
+    public int getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getRightKey() {
-        return rightKey;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRightKey(int rightKey) {
-        this.rightKey = rightKey;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public int getLeftKey() {
-        return leftKey;
+    public String getTypeUser() {
+        return typeUser;
     }
 
-    public void setLeftKey(int leftKey) {
-        this.leftKey = leftKey;
+    public void setTypeUser(String typeUser) {
+        this.typeUser = typeUser;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public float getLocalWallet() {
+        return localWallet;
+    }
+
+    public void setLocalWallet(float localWallet) {
+        this.localWallet = localWallet;
+    }
+
+    public String getAdvcashWallet() {
+        return advcashWallet;
+    }
+
+    public void setAdvcashWallet(String advcashWallet) {
+        this.advcashWallet = advcashWallet;
+    }
+
+    public List<AdvcashTransaction> getAdvcashTransactions() {
+        if( advcashTransactions==null)
+            advcashTransactions = new ArrayList<>();
+        return advcashTransactions;
     }
 
     @Override
