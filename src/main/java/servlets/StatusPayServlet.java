@@ -24,7 +24,7 @@ public class StatusPayServlet extends HttpServlet {
         Float ac_buyer_amount_without_commission = Float.parseFloat(params.get("ac_buyer_amount_without_commission")[0]);
         Float ac_buyer_amount_with_commission = Float.parseFloat(params.get("ac_buyer_amount_with_commission")[0]);
         String ac_buyer_currency = params.get("ac_buyer_currency")[0];
-        Long ac_transfer = Long.parseLong(params.get("ac_transfer")[0]);
+        String ac_transfer = params.get("ac_transfer")[0];
         String ac_sci_name = params.get("ac_sci_name")[0];
         String ac_start_date =params.get("ac_start_date")[0];
         String ac_order_id =params.get("ac_order_id")[0];

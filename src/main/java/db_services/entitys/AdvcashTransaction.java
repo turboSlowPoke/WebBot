@@ -17,10 +17,10 @@ public class AdvcashTransaction implements Serializable {
     private Float ac_buyer_amount_without_commission;//Сумма платежа Покупателя без комиссии.
     private Float ac_buyer_amount_with_commission;//Сумма платежа Покупателя с учетом комиссии.
     private String ac_buyer_currency;//ISO 4217 Валюта, в которой Покупатель оплатил заказ.
-    private Long ac_transfer;//ID-номер операции Advanced Cash.
+    private String ac_transfer;//ID-номер операции Advanced Cash.
     private String ac_sci_name;//Название магазина Продавца.
     private String ac_start_date;//Дата операции. 2012-06-23 12:30:00
-    private String ac_order_id;//идентифицирующий номер покупки
+    private String ac_order_id;//идентифицирующий номер покупки userId+typeSubscribe+date+time
     private String ac_ps;// Платежная система, которая использовалась. ADVANCED_CASH
     private String ac_transaction_status;//Статус транзакции. PENDING PROCESS CONFIRMED COMPLETED CANCELED
     private String ac_buyer_email;//E-mail Покупателя.
@@ -41,7 +41,7 @@ public class AdvcashTransaction implements Serializable {
                               Float ac_buyer_amount_without_commission,
                               Float ac_buyer_amount_with_commission,
                               String ac_buyer_currency,
-                              Long ac_transfer,
+                              String ac_transfer,
                               String ac_sci_name,
                               String ac_start_date,
                               String ac_order_id,
@@ -112,7 +112,7 @@ public class AdvcashTransaction implements Serializable {
         return ac_buyer_currency;
     }
 
-    public Long getAc_transfer() {
+    public String getAc_transfer() {
         return ac_transfer;
     }
 
