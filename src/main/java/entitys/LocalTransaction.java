@@ -1,4 +1,4 @@
-package db_services.entitys;
+package entitys;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

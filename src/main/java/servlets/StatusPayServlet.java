@@ -1,23 +1,25 @@
 package servlets;
 
 import db_services.DbService;
-import db_services.entitys.AdvcashTransaction;
+import entitys.AdvcashTransaction;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class StatusPayServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("doGet start ...");
         Map<String,String[]> params = req.getParameterMap();
         System.out.println(params.size());
         String ac_src_wallet = params.get("ac_src_wallet")[0];
         String ac_dest_wallet = params.get("ac_dest_wallet")[0];
-        Float ac_amount = Float.parseFloat(params.get("ac_amount")[0]);
+        BigDecimal ac_amount = new BigDecimal(params.get("ac_amount")[0]);
         Float ac_merchant_amount = Float.parseFloat(params.get("ac_merchant_amount")[0]);
         String ac_merchant_currency = params.get("ac_merchant_currency")[0];
         Float ac_fee = Float.parseFloat(params.get("ac_fee")[0]);
@@ -57,6 +59,10 @@ public class StatusPayServlet extends HttpServlet {
                 ac_hash
                 );
         System.out.println(transaction);
-        resp.getWriter().println(transaction);
+        System.out.println("парсим userId");
+        Long userId = Long.parseLong(ac_order_id.substring(0,ac_order_id.indexOf("_")));
+        System.out.println("добавляем транзакцию");
+        DbService.getInstance().addAcTransaction(userId,transaction);
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

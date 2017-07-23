@@ -1,16 +1,16 @@
-package db_services.entitys;
+package entitys;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
+@Entity
 public class AdvcashTransaction implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String ac_src_wallet;// Текстовая строка Uxxxxxxxxxxxx, 12 символов кошелёк покупателя
     private String ac_dest_wallet;// Текстовая строка Uxxxxxxxxxxxx, 12 символов  кошелёк продавца
-    private Float ac_amount;//00.00Сумма, начисленная на кошелек Продавца.
+    private BigDecimal ac_amount;//00.00Сумма, начисленная на кошелек Продавца.
     private Float ac_merchant_amount;//Сумма, выставленная Покупателю.
     private String ac_merchant_currency;//ISO 4217 Валюта суммы, начисленной на кошелек Продавца.
     private Float ac_fee;//Комиссия, вычтеннаясистемой Advanced Cash со счета Покупателя при получении платежа.
@@ -20,7 +20,7 @@ public class AdvcashTransaction implements Serializable {
     private String ac_transfer;//ID-номер операции Advanced Cash.
     private String ac_sci_name;//Название магазина Продавца.
     private String ac_start_date;//Дата операции. 2012-06-23 12:30:00
-    private String ac_order_id;//идентифицирующий номер покупки userId+typeSubscribe+date+time
+    private String ac_order_id;//идентифицирующий номер покупки userId+typeSubscribe+dateTime
     private String ac_ps;// Платежная система, которая использовалась. ADVANCED_CASH
     private String ac_transaction_status;//Статус транзакции. PENDING PROCESS CONFIRMED COMPLETED CANCELED
     private String ac_buyer_email;//E-mail Покупателя.
@@ -34,7 +34,7 @@ public class AdvcashTransaction implements Serializable {
 
     public AdvcashTransaction(String ac_src_wallet,
                               String ac_dest_wallet,
-                              Float ac_amount,
+                              BigDecimal ac_amount,
                               Float ac_merchant_amount,
                               String ac_merchant_currency,
                               Float ac_fee,
@@ -84,7 +84,7 @@ public class AdvcashTransaction implements Serializable {
         return ac_dest_wallet;
     }
 
-    public Float getAc_amount() {
+    public BigDecimal getAc_amount() {
         return ac_amount;
     }
 

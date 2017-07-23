@@ -1,6 +1,7 @@
-package db_services.entitys;
+package entitys;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class User implements Serializable {
     private float localWallet;
     private String advcashWallet;
 
-    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     private List<AdvcashTransaction> advcashTransactions;
     //@OneToMany(cascade = CascadeType.PERSIST)
     //private List<LocalTransaction> localTransactions;
@@ -36,6 +37,10 @@ public class User implements Serializable {
 
 
     User() {}
+
+    public User(long userID) {
+        this.userID = userID;
+    }
 
     public long getUserID() {
         return userID;
@@ -146,9 +151,13 @@ public class User implements Serializable {
     }
 
     public List<AdvcashTransaction> getAdvcashTransactions() {
-        if( advcashTransactions==null)
-            advcashTransactions = new ArrayList<>();
         return advcashTransactions;
+    }
+
+    public void addAcTransaction(AdvcashTransaction transaction){
+        if (advcashTransactions==null)
+            advcashTransactions=new ArrayList<>();
+        advcashTransactions.add(transaction);
     }
 
     @Override
