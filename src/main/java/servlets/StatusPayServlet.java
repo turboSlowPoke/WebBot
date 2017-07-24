@@ -1,5 +1,6 @@
 package servlets;
 
+import configs.TypeOfPurchase;
 import db_services.DbService;
 import entitys.AdvcashTransaction;
 
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 public class StatusPayServlet extends HttpServlet {
@@ -20,15 +23,16 @@ public class StatusPayServlet extends HttpServlet {
         String ac_src_wallet = params.get("ac_src_wallet")[0];
         String ac_dest_wallet = params.get("ac_dest_wallet")[0];
         BigDecimal ac_amount = new BigDecimal(params.get("ac_amount")[0]);
-        Float ac_merchant_amount = Float.parseFloat(params.get("ac_merchant_amount")[0]);
+        BigDecimal ac_merchant_amount = new BigDecimal(params.get("ac_merchant_amount")[0]);
         String ac_merchant_currency = params.get("ac_merchant_currency")[0];
-        Float ac_fee = Float.parseFloat(params.get("ac_fee")[0]);
-        Float ac_buyer_amount_without_commission = Float.parseFloat(params.get("ac_buyer_amount_without_commission")[0]);
-        Float ac_buyer_amount_with_commission = Float.parseFloat(params.get("ac_buyer_amount_with_commission")[0]);
+        BigDecimal ac_fee = new BigDecimal(params.get("ac_fee")[0]);
+        BigDecimal ac_buyer_amount_without_commission = new BigDecimal(params.get("ac_buyer_amount_without_commission")[0]);
+        BigDecimal ac_buyer_amount_with_commission = new BigDecimal(params.get("ac_buyer_amount_with_commission")[0]);
         String ac_buyer_currency = params.get("ac_buyer_currency")[0];
         String ac_transfer = params.get("ac_transfer")[0];
         String ac_sci_name = params.get("ac_sci_name")[0];
-        String ac_start_date =params.get("ac_start_date")[0];
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime ac_start_date = LocalDateTime.parse(params.get("ac_start_date")[0],formatter);
         String ac_order_id =params.get("ac_order_id")[0];
         String ac_ps = params.get("ac_ps")[0];
         String ac_transaction_status =params.get("ac_transaction_status")[0];
@@ -58,11 +62,29 @@ public class StatusPayServlet extends HttpServlet {
                 ac_comments,
                 ac_hash
                 );
-        System.out.println(transaction);
-        System.out.println("парсим userId");
+        System.out.println("транзакция создана");
         Long userId = Long.parseLong(ac_order_id.substring(0,ac_order_id.indexOf("_")));
-        System.out.println("добавляем транзакцию");
-        DbService.getInstance().addAcTransaction(userId,transaction);
-        resp.setStatus(HttpServletResponse.SC_OK);
+        System.out.println("пользователь " +userId);
+        String typeOfParchase = ac_order_id.substring(ac_order_id.indexOf("_")+1,ac_order_id.indexOf("-"));
+        System.out.println("операция " + typeOfParchase);
+        if (typeOfParchase.equals(TypeOfPurchase.ONE_MONTH)
+                ||typeOfParchase.equals(TypeOfPurchase.TWO_MONTH)
+                ||typeOfParchase.equals(TypeOfPurchase.THREE_MONTH)) {
+
+            if (DbService.getInstance().checkUser(userId)) {
+                DbService.getInstance().transactionHandler(userId, transaction, typeOfParchase);
+                resp.setStatus(HttpServletResponse.SC_OK);
+                System.out.println("транзакия обработана");
+            } else {
+                System.out.println("!! в базе нет пользователя " + userId);
+            }
+        } else {
+            System.out.println("неизвстная покупка " +typeOfParchase);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
     }
 }

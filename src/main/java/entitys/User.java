@@ -3,12 +3,18 @@ package entitys;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@NamedQueries({
+        @NamedQuery(name = "User.getParent",
+                query = "SELECT u FROM User u WHERE u.leftKey<=:lk AND u.rightKey>=:rk AND u.level<:l AND u.level>:l-4")
+})
 public class User implements Serializable {
     @Id
     private  long userID;
@@ -25,14 +31,15 @@ public class User implements Serializable {
 
     private String typeUser = "customer";
 
-    private LocalDate endDate;
-    private float localWallet;
+    private LocalDateTime endDate;
+    @Column(scale = 2,precision = 10)
+    private BigDecimal localWallet;
     private String advcashWallet;
-
-    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+   @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<AdvcashTransaction> advcashTransactions;
-    //@OneToMany(cascade = CascadeType.PERSIST)
-    //private List<LocalTransaction> localTransactions;
+
+    @ManyToMany(mappedBy = "childrenUsers",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<LocalTransaction> localTransactions;
 
 
 
@@ -126,19 +133,19 @@ public class User implements Serializable {
         this.typeUser = typeUser;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
-    public float getLocalWallet() {
-        return localWallet;
+    public BigDecimal getLocalWallet() {
+        return this.localWallet==null ? new BigDecimal("0.00") : this.localWallet;
     }
 
-    public void setLocalWallet(float localWallet) {
+    public void setLocalWallet(BigDecimal localWallet) {
         this.localWallet = localWallet;
     }
 
@@ -154,9 +161,19 @@ public class User implements Serializable {
         return advcashTransactions;
     }
 
+    public List<LocalTransaction> getLocalTransactions() {
+        return localTransactions;
+    }
+
+    public void addLocalTransactions(LocalTransaction localTransaction) {
+       if (this.localTransactions==null)
+            localTransactions= new ArrayList<>();
+        this.localTransactions.add(localTransaction);
+    }
+
     public void addAcTransaction(AdvcashTransaction transaction){
         if (advcashTransactions==null)
-            advcashTransactions=new ArrayList<>();
+            this.advcashTransactions=new ArrayList<>();
         advcashTransactions.add(transaction);
     }
 
