@@ -14,7 +14,7 @@ public class LocalTransaction {
     private LocalDateTime dateTime;
     @Column(scale = 2,precision = 10)
     private BigDecimal amount;
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<User> childrenUsers;
 
      LocalTransaction() {

@@ -1,10 +1,8 @@
 package entitys;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +29,17 @@ public class User implements Serializable {
 
     private String typeUser = "customer";
 
-    private LocalDateTime endDate;
+    private LocalDateTime endDateOfSubscription;
+    private String VipConsultation;
+
     @Column(scale = 2,precision = 10)
     private BigDecimal localWallet;
     private String advcashWallet;
-   @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+   @ManyToMany(mappedBy = "users",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<AdvcashTransaction> advcashTransactions;
 
     @ManyToMany(mappedBy = "childrenUsers",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<LocalTransaction> localTransactions;
-
-
 
     User() {}
 
@@ -133,12 +131,12 @@ public class User implements Serializable {
         this.typeUser = typeUser;
     }
 
-    public LocalDateTime getEndDate() {
-        return endDate;
+    public LocalDateTime getEndDateOfSubscription() {
+        return endDateOfSubscription;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
+    public void setEndDateOfSubscription(LocalDateTime endDateOfSubscription) {
+        this.endDateOfSubscription = endDateOfSubscription;
     }
 
     public BigDecimal getLocalWallet() {
@@ -184,6 +182,6 @@ public class User implements Serializable {
                 +"| UserName: "+getUserName()
                 +"| UserID: "+getUserID()
                 +"| Тип: "+getTypeUser()
-                +"| конец подписки: "+getEndDate();
+                +"| конец подписки: "+ getEndDateOfSubscription();
     }
 }

@@ -1,11 +1,11 @@
 package entitys;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ac_transactions")
@@ -38,6 +38,9 @@ public class AdvcashTransaction implements Serializable {
     //private String Merchantcustomfield;//
     private String ac_hash;//HASH-строка, составленная из информации, содержащейся в данной форме, и секретного слова для защиты.
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<User> users;
+
      AdvcashTransaction() {
     }
 
@@ -59,7 +62,8 @@ public class AdvcashTransaction implements Serializable {
                               String ac_buyer_email,
                               Boolean ac_buyer_verified,
                               String ac_comments,
-                              String ac_hash) {
+                              String ac_hash,
+                              User user) {
         this.ac_src_wallet = ac_src_wallet;
         this.ac_dest_wallet = ac_dest_wallet;
         this.ac_amount = ac_amount;
@@ -78,6 +82,8 @@ public class AdvcashTransaction implements Serializable {
         this.ac_buyer_verified = ac_buyer_verified;
         this.ac_comments = ac_comments;
         this.ac_hash = ac_hash;
+        this.users = new ArrayList<>();
+        this.users.add(user);
     }
 
     public int getId() {
@@ -156,10 +162,12 @@ public class AdvcashTransaction implements Serializable {
         return ac_comments;
     }
 
-
-
     public String getAc_hash() {
         return ac_hash;
+    }
+
+    public User getUser() {
+        return users==null ? null : users.get(0);
     }
 
     @Override

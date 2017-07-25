@@ -1,18 +1,29 @@
 package servlets;
 
 import db_services.DbService;
+import db_services.NoUserInDbException;
+import entitys.User;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 import templayter.PageGenerator;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class SendToAdvcashServlet extends HttpServlet {
+    private static final Logger log = Logger.getLogger(SendToAdvcashServlet.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String,String[]> params = req.getParameterMap();
@@ -21,7 +32,14 @@ public class SendToAdvcashServlet extends HttpServlet {
             String typeOfParchase = params.get("typeOfParchase")[0];
             String ac_amount = "0";
             String ac_comments ="";
-            if (DbService.getInstance().checkUser(userId)){
+            User user=null;
+            try {
+                user=DbService.getInstance().getUserFromDb(userId);
+            } catch (NoUserInDbException e) {
+                log.error("no in db userid="+userId);
+                log.trace(e);
+            }
+            if (user!=null){
                 switch (typeOfParchase){
                     case "oneMonth":
                         ac_amount = "6.00";
@@ -36,16 +54,34 @@ public class SendToAdvcashServlet extends HttpServlet {
                         ac_comments = "bot подписка три месяца";
                         break;
                     default:
-                        System.out.println("Проблема в SendToAdvcashServlet, оператор switch");
+                        log.error("Не известный тип платежа "+typeOfParchase);
                 }
                 LocalDateTime dateTime = LocalDateTime.now();
                 String stringDateTime = "" + dateTime.getYear() + dateTime.getMonthValue() + dateTime.getDayOfMonth() + dateTime.getHour() + dateTime.getMinute();
+                String ac_order_id = ""+userId+"_"+typeOfParchase+"-"+stringDateTime;
+                String ac_sign="";
+                /*String sign = "mega_pokemon@mail.ru:testBot:"+ac_amount+":ac_currency:MegaP0kem0n:"+ac_order_id;
+                String key = "MegaP0kem0n";
+                String ac_sign="";
+                try {
+                    Mac sha256 = Mac.getInstance("HmacSHA256");
+                    SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(),"HmacSHA256");
+                    sha256.init(secretKey);
+                    ac_sign = Base64.encodeBase64String(sha256.doFinal(sign.getBytes()));
+
+                } catch (NoSuchAlgorithmException e) {
+                    log.error(" не смог зашифровать");
+                    log.trace(e);
+                } catch (InvalidKeyException e) {
+                    log.error(" не смог зашифровать");
+                    log.trace(e);
+                }
+                */
                 Map<String, String> dataMap = new HashMap<>();
-                dataMap.put("stringUserId", userId.toString());
-                dataMap.put("typeOfParchase", typeOfParchase);
-                dataMap.put("dateTime", stringDateTime);
+                dataMap.put("ac_order_id",ac_order_id);
                 dataMap.put("ac_amount",ac_amount);
                 dataMap.put("ac_comments", ac_comments);
+                dataMap.put("ac_sign",ac_sign);
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType("text/html;charset=UTF-8");
                 resp.getWriter().println(PageGenerator.instance().getStaticPage("Advcash_Form.html", dataMap));

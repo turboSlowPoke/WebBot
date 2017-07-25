@@ -2,6 +2,7 @@ package main;
 
 import db_services.DbService;
 import entitys.User;
+import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import servlets.*;
@@ -9,6 +10,7 @@ import servlets.*;
 import java.math.BigDecimal;
 
 public class Main {
+    private static final Logger log = Logger.getLogger(Main.class);
     public static void main(String[] args) throws Exception {
         User user1 = new User(0001l);
         user1.setFirstName("user01");
@@ -51,6 +53,7 @@ public class Main {
         contextHandler.addServlet(StatusPayServlet.class,"/status");
         server.setHandler(contextHandler);
         server.start();
+        log.info("*******Server started*********");
         server.join();
     }
 }
