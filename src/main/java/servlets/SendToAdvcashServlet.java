@@ -46,13 +46,16 @@ public class SendToAdvcashServlet extends HttpServlet {
                         ac_comments = " bot подписка один месяц";
                         break;
                     case "twoMonth":
-                        ac_amount ="10.00";
+                        ac_amount ="7";
                         ac_comments = "bot подписка два месяца";
                         break;
                     case "threeMonth" :
-                        ac_amount = "15.00";
+                        ac_amount = "8";
                         ac_comments = "bot подписка три месяца";
                         break;
+                    case "oneTimeConsultation":
+                        ac_amount = "6";
+                        ac_comments = "bot персональная консультация";
                     default:
                         log.error("Не известный тип платежа "+typeOfParchase);
                 }

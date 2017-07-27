@@ -8,10 +8,10 @@
 <form method="post" action="https://wallet.advcash.com/sci/">
     <input type="hidden" name="ac_account_email" value="mega_pokemon@mail.ru" />
     <input type="hidden" name="ac_sci_name" value="testBot" />
-    <input type="text" name="ac_amount" value="${ac_amount}" />
-    <input type="text" name="ac_currency" value="RUR" />
-    <input type="text" name="ac_order_id" value="${ac_order_id}" /> <!-- сгенирить и поменять subscribeOneMonth+userId+DateTime-->
-    <input type="text" name="ac_sign" value="${ac_sign}" />
+    <input type="hidden" name="ac_amount" value="${ac_amount}" />
+    <input type="hidden" name="ac_currency" value="RUR" />
+    <input type="hidden" name="ac_order_id" value="${ac_order_id}" /> <!-- сгенирить и поменять subscribeOneMonth+userId+DateTime-->
+    <input type="hidden" name="ac_sign" value="${ac_sign}" />
     <!-- Optional Fields -->
     <input type="hidden" name="ac_success_url" value="http://290193.msk-kvm.ru/successful" />
     <input type="hidden" name="ac_success_url_method" value="GET" />
@@ -19,15 +19,15 @@
     <input type="hidden" name="ac_fail_url_method" value="GET" />
     <input type="hidden" name="ac_status_url" value="http://290193.msk-kvm.ru/status" />
     <input type="hidden" name="ac_status_url_method" value="GET" />
-    <input type="text" name="ac_comments" value="${ac_comments}" />
+    <input type="hidden" name="ac_comments" value="${ac_comments}" />
     <input type="submit" />
 </form>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-<!--<script type="text/javascript">
+<script type="text/javascript">
   $(document).ready(function() {
     window.document.forms[0].submit();
   });
 </script>
--->
+
 </body>
 </html>

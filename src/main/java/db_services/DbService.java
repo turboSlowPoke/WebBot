@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -79,16 +80,22 @@ public class DbService {
                 int parentLevel = u.getLevel();
                 switch (paidUserLevel - parentLevel) {
                     case 1:
-                        u.addLocalTransactions(localTransaction1);
-                        u.setLocalWallet(u.getLocalWallet().add(paymentForFirstLine));
+                        if (u.getEndDateOfSubscription().toLocalDate().isBefore(LocalDate.now())) {
+                            u.addLocalTransactions(localTransaction1);
+                            u.setLocalWallet(u.getLocalWallet().add(paymentForFirstLine));
+                        }
                         break;
                     case 2:
-                        u.addLocalTransactions(localTransaction2);
-                        u.setLocalWallet(u.getLocalWallet().add(paymentForSecondLine));
+                        if (u.getEndDateOfSubscription().toLocalDate().isBefore(LocalDate.now())) {
+                            u.addLocalTransactions(localTransaction2);
+                            u.setLocalWallet(u.getLocalWallet().add(paymentForSecondLine));
+                        }
                         break;
                     case 3:
-                        u.addLocalTransactions(localTransaction3);
-                        u.setLocalWallet(u.getLocalWallet().add(paymentForThirdLine));
+                        if (u.getEndDateOfSubscription().toLocalDate().isBefore(LocalDate.now())) {
+                            u.addLocalTransactions(localTransaction3);
+                            u.setLocalWallet(u.getLocalWallet().add(paymentForThirdLine));
+                        }
                         break;
                     default:
                         log.error("проценты не начислены, не правильный уровень родителя:\n" + u);
@@ -100,6 +107,8 @@ public class DbService {
         }
 
         paidUser.addAcTransaction(acTransaction);
+        if (paidUser.getPersonalData().getAdvcashWallet()==null)
+            paidUser.setAdvcashWallet(acTransaction.getAc_src_wallet());
         log.info("транзакция добавлена для userId="+userId);
         //продляем подписку
         if (paidUser.getEndDateOfSubscription()==null)
@@ -110,7 +119,9 @@ public class DbService {
             paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(2));
         else if (typeOfParchase.equals(TypeOfPurchase.THREE_MONTH))
             paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(3));
-        else
+        else if (typeOfParchase.equals(TypeOfPurchase.PRIVATE_CHAT))
+            paidUser.getServices().setOnetimeConsultation(true);
+        else 
             log.error("!!!подписка не продлена для userid "+userId);
 
         tr.commit();
