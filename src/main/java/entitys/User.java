@@ -22,7 +22,7 @@ public class User implements Serializable {
     private int leftKey;
     private String typeUser = "customer";
 
-    @ManyToMany(mappedBy = "clients",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Tasks> tasks;
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)

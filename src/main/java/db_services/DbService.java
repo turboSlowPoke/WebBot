@@ -121,6 +121,8 @@ public class DbService {
             paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(3));
         else if (typeOfParchase.equals(TypeOfPurchase.PRIVATE_CHAT))
             paidUser.getServices().setOnetimeConsultation(true);
+        else if (typeOfParchase.equals(TypeOfPurchase.UNLIMIT))
+            paidUser.getServices().setUnlimit(true);
         else 
             log.error("!!!подписка не продлена для userid "+userId);
 

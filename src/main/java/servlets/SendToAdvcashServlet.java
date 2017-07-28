@@ -56,6 +56,11 @@ public class SendToAdvcashServlet extends HttpServlet {
                     case "oneTimeConsultation":
                         ac_amount = "6";
                         ac_comments = "bot персональная консультация";
+                        break;
+                    case "unlimit":
+                        ac_amount = "10";
+                        ac_comments = "bot безлимитная подписка";
+                        break;
                     default:
                         log.error("Не известный тип платежа "+typeOfParchase);
                 }
@@ -88,6 +93,7 @@ public class SendToAdvcashServlet extends HttpServlet {
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType("text/html;charset=UTF-8");
                 resp.getWriter().println(PageGenerator.instance().getStaticPage("Advcash_Form.html", dataMap));
+                log.info("userId="+userId+" отправил запрос на плату "+typeOfParchase);
             }
             else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

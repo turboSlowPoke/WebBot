@@ -69,7 +69,8 @@ public class StatusPayServlet extends HttpServlet {
                     if (typeOfParchase.equals(TypeOfPurchase.ONE_MONTH)
                             || typeOfParchase.equals(TypeOfPurchase.TWO_MONTH)
                             || typeOfParchase.equals(TypeOfPurchase.THREE_MONTH)
-                            || typeOfParchase.equals(TypeOfPurchase.PRIVATE_CHAT)) {
+                            || typeOfParchase.equals(TypeOfPurchase.PRIVATE_CHAT)
+                            || typeOfParchase.equals(TypeOfPurchase.UNLIMIT)) {
 
                         //создаем AC тразакцию
                         AdvcashTransaction transaction = new AdvcashTransaction(
