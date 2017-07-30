@@ -77,35 +77,41 @@ public class DbService {
         List<User> parentUsers = queryParentUser.getResultList();
         if (parentUsers!=null&&parentUsers.size()>0) {
             for (User u : parentUsers) {
-                int parentLevel = u.getLevel();
-                switch (paidUserLevel - parentLevel) {
-                    case 1:
-                        if (u.getEndDateOfSubscription().toLocalDate().isBefore(LocalDate.now())) {
-                            u.addLocalTransactions(localTransaction1);
-                            u.setLocalWallet(u.getLocalWallet().add(paymentForFirstLine));
-                        }
-                        break;
-                    case 2:
-                        if (u.getEndDateOfSubscription().toLocalDate().isBefore(LocalDate.now())) {
-                            u.addLocalTransactions(localTransaction2);
-                            u.setLocalWallet(u.getLocalWallet().add(paymentForSecondLine));
-                        }
-                        break;
-                    case 3:
-                        if (u.getEndDateOfSubscription().toLocalDate().isBefore(LocalDate.now())) {
-                            u.addLocalTransactions(localTransaction3);
-                            u.setLocalWallet(u.getLocalWallet().add(paymentForThirdLine));
-                        }
-                        break;
-                    default:
-                        log.error("проценты не начислены, не правильный уровень родителя:\n" + u);
+                if (u.getServices().getEndDateOfSubscription().toLocalDate().isAfter(LocalDate.now())
+                        ||u.getServices().getUnlimit()) {
+                    int parentLevel = u.getLevel();
+                    switch (paidUserLevel - parentLevel) {
+                        case 1:
+                                log.info("записываем локальную транзакцию");
+                                u.addLocalTransactions(localTransaction1);
+                                log.info("увеличиваем кошелек");
+                                u.getPersonalData().setLocalWallet(u.getPersonalData().getLocalWallet().add(paymentForFirstLine));
+                                //u.setLocalWallet(u.getLocalWallet().add(paymentForFirstLine));
+                                //log.info("Проценты начислены сумма="+paymentForFirstLine+" для пользователя " +u+" итого в кошельке "+u.getPersonalData().getLocalWallet());
+                                if (!u.getPersonalData().getReferalsForPrize().contains(paidUser.getUserID())){
+                                    u.getPersonalData().addReferalForPrize(paidUser.getUserID());
+                                    log.info("пользователю "+u.getPersonalData().getFirstName()+"добавлен реферал для премии");
+                                }
+                            break;
+                        case 2:
+                                u.addLocalTransactions(localTransaction2);
+                                u.setLocalWallet(u.getLocalWallet().add(paymentForSecondLine));
+                                log.info("Проценты начислены сумма="+paymentForSecondLine+" для пользователя " +u+" итого в кошельке "+u.getPersonalData().getLocalWallet());
+                            break;
+                        case 3:
+                                u.addLocalTransactions(localTransaction3);
+                                u.setLocalWallet(u.getLocalWallet().add(paymentForThirdLine));
+                                log.info("Проценты начислены сумма="+paymentForThirdLine+" для пользователя " +u+" итого в кошельке "+u.getPersonalData().getLocalWallet());
+                            break;
+                        default:
+                            log.error("проценты не начислены, не правильный уровень родителя:\n" + u);
+                    }
                 }
             }
-            log.info("Проценты начислены");
+
         } else {
             log.info("пригласители для userId="+userId+" не найдены");
         }
-
         paidUser.addAcTransaction(acTransaction);
         if (paidUser.getPersonalData().getAdvcashWallet()==null)
             paidUser.setAdvcashWallet(acTransaction.getAc_src_wallet());

@@ -123,4 +123,7 @@ public class User implements Serializable {
             this.advcashTransactions=new ArrayList<>();
         this.advcashTransactions.add(acTransaction);
     }
+
+
+    
 }
