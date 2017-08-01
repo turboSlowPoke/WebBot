@@ -26,12 +26,14 @@ public class SendToAdvcashServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(SendToAdvcashServlet.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.info("Recive request payment from bot");
         Map<String,String[]> params = req.getParameterMap();
         if (params!=null&params.size()==2) {
             Long userId = Long.parseLong(params.get("userId")[0]);
             String typeOfParchase = params.get("typeOfParchase")[0];
             String ac_amount = "0";
             String ac_comments ="";
+            log.info("payment parametersfrom bot : userId="+userId+" typeOfParchase="+typeOfParchase);
             User user=null;
             try {
                 user=DbService.getInstance().getUserFromDb(userId);
@@ -43,23 +45,23 @@ public class SendToAdvcashServlet extends HttpServlet {
                 switch (typeOfParchase){
                     case "oneMonth":
                         ac_amount = "6.00";
-                        ac_comments = " bot подписка один месяц";
+                        ac_comments = "TheNewWaveBot подписка один месяц";
                         break;
                     case "twoMonth":
-                        ac_amount ="7";
-                        ac_comments = "bot подписка два месяца";
+                        ac_amount ="7.00";
+                        ac_comments = "TheNewWaveBot подписка два месяца";
                         break;
                     case "threeMonth" :
-                        ac_amount = "8";
-                        ac_comments = "bot подписка три месяца";
+                        ac_amount = "8.00";
+                        ac_comments = "TheNewWaveBot подписка три месяца";
                         break;
                     case "oneTimeConsultation":
                         ac_amount = "6";
-                        ac_comments = "bot персональная консультация";
+                        ac_comments = "TheNewWaveBot персональная консультация";
                         break;
                     case "unlimit":
                         ac_amount = "10";
-                        ac_comments = "bot безлимитная подписка";
+                        ac_comments = "TheNewWaveBot безлимитная подписка";
                         break;
                     default:
                         log.error("Не известный тип платежа "+typeOfParchase);

@@ -73,6 +73,7 @@ public class StatusPayServlet extends HttpServlet {
                             || typeOfParchase.equals(TypeOfPurchase.UNLIMIT)) {
 
                         //создаем AC тразакцию
+                        log.info("создаём транзакцию");
                         AdvcashTransaction transaction = new AdvcashTransaction(
                                 ac_src_wallet,
                                 ac_dest_wallet,
@@ -97,6 +98,7 @@ public class StatusPayServlet extends HttpServlet {
 
                         //супер метод transactionHandler, продлевает подписку, начисляет выплаты по реферальной программе,
                         //сохраняет AC и локальные тразакции
+                        log.info("пытаемся добавить в базу");
                         DbService.getInstance().transactionHandler(userId, transaction, typeOfParchase);
                         resp.setStatus(HttpServletResponse.SC_OK);
                         log.info("transaction ac_transfer=" + ac_transfer +" для userId="+userId+" hanled ");
