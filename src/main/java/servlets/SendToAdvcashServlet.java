@@ -44,23 +44,23 @@ public class SendToAdvcashServlet extends HttpServlet {
             if (user!=null){
                 switch (typeOfParchase){
                     case "oneMonth":
-                        ac_amount = "6.00";
+                        ac_amount = "0.30";
                         ac_comments = "TheNewWaveBot подписка один месяц";
                         break;
                     case "twoMonth":
-                        ac_amount ="7.00";
+                        ac_amount ="0.40";
                         ac_comments = "TheNewWaveBot подписка два месяца";
                         break;
                     case "threeMonth" :
-                        ac_amount = "8.00";
+                        ac_amount = "0.50";
                         ac_comments = "TheNewWaveBot подписка три месяца";
                         break;
                     case "oneTimeConsultation":
-                        ac_amount = "6";
+                        ac_amount = "0.35";
                         ac_comments = "TheNewWaveBot персональная консультация";
                         break;
                     case "unlimit":
-                        ac_amount = "10";
+                        ac_amount = "0.60";
                         ac_comments = "TheNewWaveBot безлимитная подписка";
                         break;
                     default:
