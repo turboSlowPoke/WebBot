@@ -17,7 +17,7 @@ import java.util.List;
 public class DbService {
     private static final Logger log = Logger.getLogger(DbService.class);
     private static DbService db_service;
-    private EntityManagerFactory managerFactory;
+    private final EntityManagerFactory managerFactory;
 
     private DbService() {
         this.managerFactory = Persistence.createEntityManagerFactory("eclipsMysql");
@@ -54,7 +54,6 @@ public class DbService {
     public synchronized void transactionHandler(long userId, AdvcashTransaction acTransaction, String typeOfParchase){
         EntityManager em = managerFactory.createEntityManager();
         EntityTransaction tr = em.getTransaction();
-        TypedQuery<User> queryParentUser = em.createNamedQuery("User.getParent",User.class);
 
         tr.begin();
         log.info("начало транзакции");
@@ -63,9 +62,6 @@ public class DbService {
         int paidUserLevel = paidUser.getLevel();
         int lk = paidUser.getLeftKey();
         int rk = paidUser.getRightKey();
-        queryParentUser.setParameter("l",paidUserLevel);
-        queryParentUser.setParameter("lk",lk);
-        queryParentUser.setParameter("rk",rk);
         //вычисляем размеры выплат для 3 линий
         BigDecimal paymentForFirstLine = CalculateOfPayment.calcForFirstLine(acTransaction.getAc_amount());
         BigDecimal paymentForSecondLine = CalculateOfPayment.calcForSecondLine(acTransaction.getAc_amount());
@@ -75,9 +71,14 @@ public class DbService {
         LocalTransaction localTransaction2 = new LocalTransaction(LocalDateTime.now(), paymentForSecondLine, paidUser);
         LocalTransaction localTransaction3 = new LocalTransaction(LocalDateTime.now(), paymentForThirdLine, paidUser);
         //находим пригластителей, если они еть то добавляем тразакции и пополняем кошелёк
-        List<User> parentUsers = queryParentUser.getResultList();
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.leftKey<=:lk AND u.rightKey>=:rk AND u.level<:l AND u.level>:l-4")
+                .setParameter("l",paidUserLevel)
+                .setParameter("lk",lk)
+                .setParameter("rk",rk);
+        List<User> parentUsers = query.getResultList();
         if (parentUsers!=null&&parentUsers.size()>0) {
             for (User u : parentUsers) {
+                em.refresh(u.getPersonalData());
                 if (u.getServices().getEndDateOfSubscription().toLocalDate().isAfter(LocalDate.now())
                         &&u.getAdvcashTransactions()!=null
                         &&u.getAdvcashTransactions().size()>0
