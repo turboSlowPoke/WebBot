@@ -59,7 +59,6 @@ public class DbService {
         tr.begin();
         log.info("начало транзакции");
         User paidUser = em.find(User.class,userId);
-        log.info("нашли юзера "+paidUser);
         em.refresh(paidUser);
         int paidUserLevel = paidUser.getLevel();
         int lk = paidUser.getLeftKey();
@@ -68,21 +67,20 @@ public class DbService {
         queryParentUser.setParameter("lk",lk);
         queryParentUser.setParameter("rk",rk);
         //вычисляем размеры выплат для 3 линий
-        log.info("считаем выплаты");
         BigDecimal paymentForFirstLine = CalculateOfPayment.calcForFirstLine(acTransaction.getAc_amount());
         BigDecimal paymentForSecondLine = CalculateOfPayment.calcForSecondLine(acTransaction.getAc_amount());
         BigDecimal paymentForThirdLine = CalculateOfPayment.calcForThirdLine(acTransaction.getAc_amount());
         //создаем транзакции для истрии выплат
-        log.info("создаем локальные транзакции");
         LocalTransaction localTransaction1 = new LocalTransaction(LocalDateTime.now(), paymentForFirstLine, paidUser);
         LocalTransaction localTransaction2 = new LocalTransaction(LocalDateTime.now(), paymentForSecondLine, paidUser);
         LocalTransaction localTransaction3 = new LocalTransaction(LocalDateTime.now(), paymentForThirdLine, paidUser);
         //находим пригластителей, если они еть то добавляем тразакции и пополняем кошелёк
-        log.info("ищем пригласителей");
         List<User> parentUsers = queryParentUser.getResultList();
         if (parentUsers!=null&&parentUsers.size()>0) {
             for (User u : parentUsers) {
                 if (u.getServices().getEndDateOfSubscription().toLocalDate().isAfter(LocalDate.now())
+                        &&u.getAdvcashTransactions()!=null
+                        &&u.getAdvcashTransactions().size()>0
                         ||u.getServices().getUnlimit()) {
                     int parentLevel = u.getLevel();
                     switch (paidUserLevel - parentLevel) {
@@ -139,14 +137,6 @@ public class DbService {
 
         tr.commit();
         em.close();
-    }
-
-    public synchronized boolean hasUser(long id) throws NoUserInDbException {
-        boolean check = false;
-        User user = getUserFromDb(id);
-        if (user!=null)
-            check=true;
-        return check;
     }
 
 }

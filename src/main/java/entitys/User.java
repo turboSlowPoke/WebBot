@@ -118,6 +118,10 @@ public class User implements Serializable {
         getPersonalData().setAdvcashWallet(numberWallet);
     }
 
+    public List<AdvcashTransaction> getAdvcashTransactions() {
+        return advcashTransactions;
+    }
+
     public void addAcTransaction(AdvcashTransaction acTransaction) {
         if (this.advcashTransactions==null)
             this.advcashTransactions=new ArrayList<>();
