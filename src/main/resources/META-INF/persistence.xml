@@ -15,8 +15,8 @@
         <properties>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/bot?useSSL=false&amp;useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
-            <property name="hibernate.connection.username" value="root"/>
-            <property name="hibernate.connection.password" value="123456"/>
+            <property name="hibernate.connection.username" value="web"/>
+            <property name="hibernate.connection.password" value="MegaP0kem0n"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57Dialect"/>
             <property name="hiber nate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.connection.autocommit" value="true"/>
@@ -37,6 +37,10 @@
             <property name="javax.persistence.jdbc.user" value="web"/>
             <property name="javax.persistence.jdbc.password" value="MegaP0kem0n"/>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="eclipselink.query-results-cache" value="false"/>
+            <property name="eclipselink.cache.shared.default" value="false"/>
+            <property name="eclipselink.cache.size.default" value="0"/>
+            <property name="eclipselink.cache.type.default" value="None"/>
         </properties>
     </persistence-unit>
 </persistence>

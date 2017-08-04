@@ -6,6 +6,8 @@ import entitys.AdvcashTransaction;
 import entitys.LocalTransaction;
 import entitys.User;
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.config.CacheUsage;
+import org.eclipse.persistence.config.QueryHints;
 import sun.rmi.runtime.Log;
 
 import javax.persistence.*;
@@ -74,11 +76,12 @@ public class DbService {
         Query query = em.createQuery("SELECT u FROM User u WHERE u.leftKey<=:lk AND u.rightKey>=:rk AND u.level<:l AND u.level>:l-4")
                 .setParameter("l",paidUserLevel)
                 .setParameter("lk",lk)
-                .setParameter("rk",rk);
+                .setParameter("rk",rk)
+                .setHint(QueryHints.CACHE_USAGE, CacheUsage.NoCache);
         List<User> parentUsers = query.getResultList();
         if (parentUsers!=null&&parentUsers.size()>0) {
             for (User u : parentUsers) {
-                em.refresh(u.getPersonalData());
+               // em.refresh(u.getPersonalData());
                 if (u.getServices().getEndDateOfSubscription().toLocalDate().isAfter(LocalDate.now())
                         &&u.getAdvcashTransactions()!=null
                         &&u.getAdvcashTransactions().size()>0
