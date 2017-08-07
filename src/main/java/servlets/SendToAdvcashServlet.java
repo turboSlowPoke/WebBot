@@ -45,26 +45,26 @@ public class SendToAdvcashServlet extends HttpServlet {
                 switch (typeOfParchase){
                     case "oneMonth":
                         ac_amount = "0.30";
-                        ac_comments = "TheNewWaveBot подписка один месяц";
+                        ac_comments = "New Wave: подписка два дня";
                         break;
                     case "twoMonth":
                         ac_amount ="0.40";
-                        ac_comments = "TheNewWaveBot подписка два месяца";
+                        ac_comments = "New Wave: подписка 4 дня";
                         break;
                     case "threeMonth" :
                         ac_amount = "0.50";
-                        ac_comments = "TheNewWaveBot подписка три месяца";
+                        ac_comments = "New Wave: подписка 7 дней";
                         break;
                     case "oneTimeConsultation":
                         ac_amount = "0.35";
-                        ac_comments = "TheNewWaveBot персональная консультация";
+                        ac_comments = "New Wave: аудит портфеля(персональная консультация)";
                         break;
                     case "unlimit":
                         ac_amount = "0.60";
-                        ac_comments = "TheNewWaveBot безлимитная подписка";
+                        ac_comments = "New Wave: безлимитная подписка";
                         break;
                     default:
-                        log.error("Не известный тип платежа "+typeOfParchase);
+                        log.error("Неизвестный тип платежа "+typeOfParchase);
                 }
                 LocalDateTime dateTime = LocalDateTime.now();
                 String stringDateTime = "" + dateTime.getYear() + dateTime.getMonthValue() + dateTime.getDayOfMonth() + dateTime.getHour() + dateTime.getMinute();

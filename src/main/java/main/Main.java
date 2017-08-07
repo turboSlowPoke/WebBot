@@ -4,7 +4,9 @@ import db_services.DbService;
 import entitys.User;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.*;
 
 import java.math.BigDecimal;
@@ -14,6 +16,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Server server = new Server(80);
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        contextHandler.setContextPath("/");
+        ServletHolder staticHolder = new ServletHolder(new DefaultServlet());
+        staticHolder.setInitParameter("resourceBase", "../resources/main/templates/");
+        contextHandler.addServlet(staticHolder, "/*");
         contextHandler.addServlet(RootServlet.class,"/");
         contextHandler.addServlet(SendToAdvcashServlet.class,"/redirectToAdvcash");
         contextHandler.addServlet(SuccessfulPayServlet.class,"/successful");

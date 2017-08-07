@@ -13,7 +13,7 @@ import java.io.IOException;
 public class UnsuccessfulPayServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        File file = new File("../resources/main/templates/Unsuccessful.html");
+        File file = new File("../resources/main/templates/failpage.html");
         Document doc = Jsoup.parse(file,"UTF-8");
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/html;charset=UTF-8");

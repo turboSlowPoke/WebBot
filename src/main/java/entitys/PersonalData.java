@@ -20,9 +20,10 @@ public class PersonalData implements Serializable {
     private String advcashWallet;
     @CollectionTable
     private List<Long> referalsForPrize;
-    private int countPrize=0;
+    private int countPrize=10;
     @Column(scale = 2,precision = 10)
     private BigDecimal localWallet;
+    private int prize=0;
 
     public PersonalData() {
     }
@@ -51,21 +52,6 @@ public class PersonalData implements Serializable {
         return nickVK;
     }
 
-    public void setNickVK(String nickVK) {
-        this.nickVK = nickVK;
-    }
-
-    public String getAccountCryptoCompare() {
-        return accountCryptoCompare;
-    }
-
-    public void setAccountCryptoCompare(String accountCryptoCompare) {
-        this.accountCryptoCompare = accountCryptoCompare;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -119,7 +105,11 @@ public class PersonalData implements Serializable {
         return countPrize;
     }
 
-    public void incrementCountPrize() {
-        this.countPrize++;
+    public void addCountPrize(int count) {
+        this.countPrize = this.countPrize+count;
+    }
+
+    public void setPrize(int prize) {
+        this.prize = prize;
     }
 }

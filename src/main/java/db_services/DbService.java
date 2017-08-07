@@ -68,10 +68,7 @@ public class DbService {
         BigDecimal paymentForFirstLine = CalculateOfPayment.calcForFirstLine(acTransaction.getAc_amount());
         BigDecimal paymentForSecondLine = CalculateOfPayment.calcForSecondLine(acTransaction.getAc_amount());
         BigDecimal paymentForThirdLine = CalculateOfPayment.calcForThirdLine(acTransaction.getAc_amount());
-        //создаем транзакции для истрии выплат
-        LocalTransaction localTransaction1 = new LocalTransaction(LocalDateTime.now(), paymentForFirstLine, paidUser);
-        LocalTransaction localTransaction2 = new LocalTransaction(LocalDateTime.now(), paymentForSecondLine, paidUser);
-        LocalTransaction localTransaction3 = new LocalTransaction(LocalDateTime.now(), paymentForThirdLine, paidUser);
+
         //находим пригластителей, если они еть то добавляем тразакции и пополняем кошелёк
         Query query = em.createQuery("SELECT u FROM User u WHERE u.leftKey<=:lk AND u.rightKey>=:rk AND u.level<:l AND u.level>:l-4")
                 .setParameter("l",paidUserLevel)
@@ -81,6 +78,10 @@ public class DbService {
         List<User> parentUsers = query.getResultList();
         if (parentUsers!=null&&parentUsers.size()>0) {
             for (User u : parentUsers) {
+                //создаем транзакции для истрии выплат
+
+                LocalTransaction localTransaction2 = new LocalTransaction(LocalDateTime.now(), paymentForSecondLine, paidUser);
+                LocalTransaction localTransaction3 = new LocalTransaction(LocalDateTime.now(), paymentForThirdLine, paidUser);
                // em.refresh(u.getPersonalData());
                 if (u.getServices().getEndDateOfSubscription().toLocalDate().isAfter(LocalDate.now())
                         &&u.getAdvcashTransactions()!=null
@@ -89,16 +90,26 @@ public class DbService {
                     int parentLevel = u.getLevel();
                     switch (paidUserLevel - parentLevel) {
                         case 1:
-                                log.info("записываем локальную транзакцию");
-                                u.addLocalTransactions(localTransaction1);
-                                log.info("увеличиваем кошелек");
-                                u.getPersonalData().setLocalWallet(u.getPersonalData().getLocalWallet().add(paymentForFirstLine));
-                                //u.setLocalWallet(u.getLocalWallet().add(paymentForFirstLine));
-                                //log.info("Проценты начислены сумма="+paymentForFirstLine+" для пользователя " +u+" итого в кошельке "+u.getPersonalData().getLocalWallet());
-                                if (!u.getPersonalData().getReferalsForPrize().contains(paidUser.getUserID())){
-                                    u.getPersonalData().addReferalForPrize(paidUser.getUserID());
-                                    log.info("пользователю "+u.getPersonalData().getFirstName()+"добавлен реферал для премии");
+                            LocalTransaction localTransaction1 = new LocalTransaction(LocalDateTime.now(), paymentForFirstLine, u);
+                            u.addLocalTransactions(localTransaction1);
+                            u.getPersonalData().setLocalWallet(u.getPersonalData().getLocalWallet().add(paymentForFirstLine));
+                            log.info("Проценты начислены сумма="+paymentForFirstLine+" для пользователя " +u+" итого в кошельке "+u.getPersonalData().getLocalWallet());
+                            //u.setLocalWallet(u.getLocalWallet().add(paymentForFirstLine));
+                            //log.info("Проценты начислены сумма="+paymentForFirstLine+" для пользователя " +u+" итого в кошельке "+u.getPersonalData().getLocalWallet());
+                            if (!u.getPersonalData().getReferalsForPrize().contains(paidUser.getUserID())){
+                                System.out.println(u.getPersonalData().getReferalsForPrize());
+                                u.getPersonalData().addReferalForPrize(paidUser.getUserID());
+                                log.info("пользователю "+u+"добавлен реферал для премии"+paidUser);
+                                //если набрал очередные 10 клиентов то выплачиваем премию
+                                if (u.getPersonalData().getReferalsForPrize().size()>=u.getPersonalData().getCountPrize()){
+                                    LocalTransaction prize = new LocalTransaction(LocalDateTime.now(),new BigDecimal("1000.00"),u);
+                                    u.addLocalTransactions(prize);
+                                    u.getPersonalData().setLocalWallet(u.getPersonalData().getLocalWallet().add(new BigDecimal("1000.00")));
+                                    u.getPersonalData().addCountPrize(10);
+                                    u.getPersonalData().setPrize(1);
+                                    log.info("пользователю "+u+" начислена премия за 10 клиентов");
                                 }
+                            }
                             break;
                         case 2:
                                 u.addLocalTransactions(localTransaction2);
@@ -127,11 +138,11 @@ public class DbService {
         if (paidUser.getEndDateOfSubscription()==null)
             paidUser.setEndDateOfSubscription(LocalDateTime.now());
         if (typeOfParchase.equals(TypeOfPurchase.ONE_MONTH))
-            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(1));
+            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusDays(2));//plusMonths(1));
         else if (typeOfParchase.equals(TypeOfPurchase.TWO_MONTH))
-            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(2));
+            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusDays(4));//plusMonths(2));
         else if (typeOfParchase.equals(TypeOfPurchase.THREE_MONTH))
-            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(3));
+            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusDays(7));//plusMonths(3));
         else if (typeOfParchase.equals(TypeOfPurchase.PRIVATE_CHAT))
             paidUser.getServices().setOnetimeConsultation(true);
         else if (typeOfParchase.equals(TypeOfPurchase.UNLIMIT))

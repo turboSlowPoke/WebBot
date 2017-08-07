@@ -35,6 +35,8 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "childrenUsers",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<LocalTransaction> localTransactions;
 
+
+
     User() {}
 
     public User(long userID) {
