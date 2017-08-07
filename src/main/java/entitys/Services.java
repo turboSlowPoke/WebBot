@@ -1,5 +1,6 @@
 package entitys;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +14,8 @@ public class Services implements Serializable {
     private LocalDateTime endDateOfSubscription;
     private Boolean onetimeConsultation=false;
     private Boolean unlimitSubscription=false;
+    @Column(name = "deletedInMainChat")
+    private Boolean deletedInMainChat = false;
 
      public Services() {
     }
