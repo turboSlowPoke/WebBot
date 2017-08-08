@@ -101,14 +101,14 @@ public class DbService {
                                 u.getPersonalData().addReferalForPrize(paidUser.getUserID());
                                 log.info("пользователю "+u+"добавлен реферал для премии"+paidUser);
                                 //если набрал очередные 10 клиентов то выплачиваем премию
-                                if (u.getPersonalData().getReferalsForPrize().size()>=u.getPersonalData().getCountPrize()){
+                               /* if (u.getPersonalData().getReferalsForPrize().size()>=u.getPersonalData().getCountPrize()){
                                     LocalTransaction prize = new LocalTransaction(LocalDateTime.now(),new BigDecimal("1000.00"),u);
                                     u.addLocalTransactions(prize);
                                     u.getPersonalData().setLocalWallet(u.getPersonalData().getLocalWallet().add(new BigDecimal("1000.00")));
                                     u.getPersonalData().addCountPrize(10);
                                     u.getPersonalData().setPrize(1);
                                     log.info("пользователю "+u+" начислена премия за 10 клиентов");
-                                }
+                                }*/
                             }
                             break;
                         case 2:
