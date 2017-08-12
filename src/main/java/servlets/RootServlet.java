@@ -13,7 +13,7 @@ import java.io.IOException;
 public class RootServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        File file = new File("../resources/main/templates/index.html");
+        File file = new File("../resources/main/webcontent/index.html");
         Document doc = Jsoup.parse(file,"UTF-8");
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/html;charset=UTF-8");

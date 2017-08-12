@@ -18,7 +18,7 @@ public class Main {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         contextHandler.setContextPath("/");
         ServletHolder staticHolder = new ServletHolder(new DefaultServlet());
-        staticHolder.setInitParameter("resourceBase", "../resources/main/templates/");
+        staticHolder.setInitParameter("resourceBase", "../resources/main/webcontent/");
         contextHandler.addServlet(staticHolder, "/*");
         contextHandler.addServlet(RootServlet.class,"/");
         contextHandler.addServlet(SendToAdvcashServlet.class,"/redirectToAdvcash");

@@ -10,7 +10,7 @@ repositories {
 }
 
 jar {
-    baseName = 'temp-WebBot'
+    baseName = 'WebBot'
     version =  '0.0.1'
     manifest {
         attributes(
