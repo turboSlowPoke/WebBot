@@ -118,7 +118,7 @@ public class StatusPayServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.error("вызван метод doGet");
         doPost(req,resp);
-        log.info("вызван метод doGet");
     }
 }
