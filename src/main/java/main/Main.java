@@ -24,6 +24,7 @@ public class Main {
         contextHandler.addServlet(SendToAdvcashServlet.class,"/redirectToAdvcash");
         contextHandler.addServlet(SuccessfulPayServlet.class,"/successful");
         contextHandler.addServlet(UnsuccessfulPayServlet.class,"/unsuccessful");
+        contextHandler.addServlet(StatusPayServlet.class,"/432757270:AAH-WlbhHAjVRah4VyqqOEKmR-1dR2zeMhs");
         contextHandler.addServlet(StatusPayServlet.class,"/status");
         server.setHandler(contextHandler);
         server.start();

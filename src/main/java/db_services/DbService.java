@@ -138,11 +138,11 @@ public class DbService {
         if (paidUser.getEndDateOfSubscription()==null)
             paidUser.setEndDateOfSubscription(LocalDateTime.now());
         if (typeOfParchase.equals(TypeOfPurchase.ONE_MONTH))
-            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusDays(2));//plusMonths(1));
+            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(1));//plusMonths(1));
         else if (typeOfParchase.equals(TypeOfPurchase.TWO_MONTH))
-            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusDays(4));//plusMonths(2));
+            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(2));//plusMonths(2));
         else if (typeOfParchase.equals(TypeOfPurchase.THREE_MONTH))
-            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusDays(7));//plusMonths(3));
+            paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(3));//plusMonths(3));
         else if (typeOfParchase.equals(TypeOfPurchase.PRIVATE_CHAT))
             paidUser.getServices().setOnetimeConsultation(true);
         else if (typeOfParchase.equals(TypeOfPurchase.UNLIMIT))

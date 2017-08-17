@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "botusers")
 @NamedQueries({
         @NamedQuery(name = "User.getParent",
                 query = "SELECT u FROM User u WHERE u.leftKey<=:lk AND u.rightKey>=:rk AND u.level<:l AND u.level>:l-4")
@@ -16,7 +16,6 @@ import java.util.List;
 public class User implements Serializable {
     @Id
     private  long userID;
-    private long chatID;
     private int level;
     private int rightKey;
     private int leftKey;
@@ -43,12 +42,11 @@ public class User implements Serializable {
         this.userID = userID;
     }
 
-    public User(long userID, String userName, String firstName, String lastName, long chatID) {
+    public User(long userID, String userName, String firstName, String lastName) {
         this.userID=userID;
         getPersonalData().setUserNameTelegram(userName);
         getPersonalData().setFirstName(firstName);
         getPersonalData().setLastName(lastName);
-        this.chatID=chatID;
     }
 
     public long getUserID() {

@@ -14,7 +14,7 @@
 
         <properties>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/bot?useSSL=false&amp;useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/bot01?useSSL=false&amp;useUnicode=true&amp;serverTimezone=UTC"/>
             <property name="hibernate.connection.username" value="web"/>
             <property name="hibernate.connection.password" value="MegaP0kem0n"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57Dialect"/>
@@ -33,7 +33,7 @@
         <class>entitys.Tasks</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bot?useSSL=false&amp;useUnicode=true&amp;serverTimezone=UTC"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bot01?useSSL=false&amp;useUnicode=true&amp;serverTimezone=UTC"/>
             <property name="javax.persistence.jdbc.user" value="web"/>
             <property name="javax.persistence.jdbc.password" value="MegaP0kem0n"/>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>

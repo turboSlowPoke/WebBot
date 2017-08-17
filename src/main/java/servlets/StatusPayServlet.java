@@ -22,7 +22,7 @@ import java.util.Map;
 public class StatusPayServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(StatusPayServlet.class);
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("Recive status transaction form AC");
         Map<String,String[]> params = req.getParameterMap();
         //проверяем наличие параметров в запросе
@@ -117,7 +117,8 @@ public class StatusPayServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req,resp);
+        log.info("вызван метод doGet");
     }
 }
