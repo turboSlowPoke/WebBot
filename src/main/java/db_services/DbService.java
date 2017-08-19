@@ -8,21 +8,24 @@ import entitys.User;
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.config.CacheUsage;
 import org.eclipse.persistence.config.QueryHints;
-import sun.rmi.runtime.Log;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DbService {
     private static final Logger log = Logger.getLogger(DbService.class);
     private static DbService db_service;
+    private List<Long> usersWithoutRef;
     private final EntityManagerFactory managerFactory;
 
     private DbService() {
         this.managerFactory = Persistence.createEntityManagerFactory("eclipsMysql");
+        usersWithoutRef = new ArrayList<>(Arrays.asList(125897635l,309672610l,172219948l,95800325l,154393865l,245480645l));
     }
 
     public static synchronized DbService getInstance(){
@@ -78,8 +81,10 @@ public class DbService {
         List<User> parentUsers = query.getResultList();
         if (parentUsers!=null&&parentUsers.size()>0) {
             for (User u : parentUsers) {
+                //проверим доступны ли юзеру начисления
+                if (withoutRef(u.getUserID()))
+                    continue;
                 //создаем транзакции для истрии выплат
-
                 LocalTransaction localTransaction2 = new LocalTransaction(LocalDateTime.now(), paymentForSecondLine, paidUser);
                 LocalTransaction localTransaction3 = new LocalTransaction(LocalDateTime.now(), paymentForThirdLine, paidUser);
                // em.refresh(u.getPersonalData());
@@ -94,8 +99,6 @@ public class DbService {
                             u.addLocalTransactions(localTransaction1);
                             u.getPersonalData().setLocalWallet(u.getPersonalData().getLocalWallet().add(paymentForFirstLine));
                             log.info("Проценты начислены сумма="+paymentForFirstLine+" для пользователя " +u+" итого в кошельке "+u.getPersonalData().getLocalWallet());
-                            //u.setLocalWallet(u.getLocalWallet().add(paymentForFirstLine));
-                            //log.info("Проценты начислены сумма="+paymentForFirstLine+" для пользователя " +u+" итого в кошельке "+u.getPersonalData().getLocalWallet());
                             if (!u.getPersonalData().getReferalsForPrize().contains(paidUser.getUserID())){
                                 System.out.println(u.getPersonalData().getReferalsForPrize());
                                 u.getPersonalData().addReferalForPrize(paidUser.getUserID());
@@ -135,7 +138,7 @@ public class DbService {
             paidUser.setAdvcashWallet(acTransaction.getAc_src_wallet());
         log.info("транзакция добавлена для userId="+userId);
         //продляем подписку
-        if (paidUser.getEndDateOfSubscription()==null)
+        if (paidUser.getServices().getEndDateOfSubscription()==null||paidUser.getServices().getEndDateOfSubscription().isBefore(LocalDateTime.now()))
             paidUser.setEndDateOfSubscription(LocalDateTime.now());
         if (typeOfParchase.equals(TypeOfPurchase.ONE_MONTH))
             paidUser.setEndDateOfSubscription(paidUser.getEndDateOfSubscription().plusMonths(1));//plusMonths(1));
@@ -152,6 +155,17 @@ public class DbService {
 
         tr.commit();
         em.close();
+    }
+
+    private boolean withoutRef(long userID) {
+        boolean check = false;
+        for (Long id : usersWithoutRef) {
+            if (id == userID) {
+                check = true;
+                break;
+            }
+        }
+        return check;
     }
 
 }
