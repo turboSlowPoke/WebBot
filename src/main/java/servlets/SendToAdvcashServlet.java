@@ -44,15 +44,15 @@ public class SendToAdvcashServlet extends HttpServlet {
             if (user!=null){
                 switch (typeOfParchase){
                     case "oneMonth":
-                        ac_amount = "300";
+                        ac_amount = "600";
                         ac_comments = "New Wave: подписка на 1 месяц";
                         break;
                     case "twoMonth":
-                        ac_amount ="400";
+                        ac_amount ="800";
                         ac_comments = "New Wave: подписка на 2 месяца";
                         break;
                     case "threeMonth" :
-                        ac_amount = "500";
+                        ac_amount = "1000";
                         ac_comments = "New Wave: подписка на 3 месяца";
                         break;
                     case "oneTimeConsultation":
@@ -60,7 +60,7 @@ public class SendToAdvcashServlet extends HttpServlet {
                         ac_comments = "New Wave: аудит портфеля(персональная консультация)";
                         break;
                     case "unlimit":
-                        ac_amount = "5000";
+                        ac_amount = "10000";
                         ac_comments = "New Wave: безлимитная подписка";
                         break;
                     default:
