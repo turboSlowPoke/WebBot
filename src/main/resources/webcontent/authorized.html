@@ -29,9 +29,6 @@
           <li class="nav-item">
             <a class="nav-link" href="./index.html#contacts">Контакты </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/lk">Личный кабинет</a>
-          </li>
         </ul>
       </div>
     </div>
@@ -41,11 +38,20 @@
       <div class="row">
         <div class="col-md-4">
           <img class="img-fluid d-block py-3" src="./images/logo_nw.png"> </div>
-        <div class="col-md-8 py-5" id="home">
+        <div class="col-md-5 py-5" id="home">
           <h1 class="text-primary">Добро пожаловать на
             <br><b>New Wave</b>!
             <br> </h1>
           <p class="lead">Мы, сервис по предоставлению торговых сигналов, предлагаем Вам поймать волну и заработать на росте рынка криптовалют. </p>
+        </div>
+        <div class="col-md-3 py-5">
+          <form class="pi-draggable" action="/login" method="POST">
+            <div class="form-group"> <label>Login</label>
+              <input type="email" class="form-control" placeholder="@Login"> </div>
+            <div class="form-group"> <label>Password</label>
+              <input type="password" class="form-control" placeholder="Password"> </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
         </div>
       </div>
     </div>

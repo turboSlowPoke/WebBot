@@ -26,6 +26,7 @@ public class Main {
         contextHandler.addServlet(UnsuccessfulPayServlet.class,"/unsuccessful");
         contextHandler.addServlet(StatusPayServlet.class,"/432757270:AAH-WlbhHAjVRah4VyqqOEKmR-1dR2zeMhs");
         contextHandler.addServlet(StatusPayServlet.class,"/status");
+        contextHandler.addServlet(LoginServlets.class,"/login");
         server.setHandler(contextHandler);
         server.start();
         log.info("*******Server started*********");
